@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WATER TIME</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <style>
+        body { background: #050505; color: #00ffff; font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .box { border: 1px solid #111; padding: 40px; background: #0a0a0a; text-align: center; border-radius: 20px; box-shadow: 0 0 20px rgba(0,255,255,0.1); }
+        #time { font-size: 60px; font-weight: bold; margin: 20px 0; }
+        .toggle-btn { background: #111; color: #00ffff; border: 1px solid #00ffff; padding: 10px 20px; cursor: pointer; font-family: 'Courier New'; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <div id="time">00:00:00</div>
+        <button class="toggle-btn" onclick="toggleFormat()">TOGGLE 24H</button>
+        <p style="font-size: 10px; color: #333; margin-top: 20px;">SYSTEM.WATER.OS</p>
+    </div>
+
+    <script>
+        let is24 = false;
+        function toggleFormat() { is24 = !is24; update(); }
+
+        function update() {
+            const now = new Date();
+            if(is24) {
+                document.getElementById('time').innerText = now.toLocaleTimeString('en-GB');
+            } else {
+                document.getElementById('time').innerText = now.toLocaleTimeString('en-US');
+            }
+        }
+        setInterval(update, 1000);
+
+        // --- REGISTER SERVICE WORKER (Makes it Installable) ---
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
